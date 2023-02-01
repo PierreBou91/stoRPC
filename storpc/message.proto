@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+option go_package = "github.com/PierreBou91/stoRPC";
+
+package storpc;
+
+// Interface exported by the server.
+service Storpc {
+    rpc PutValue(Pair) returns (PutResponse) {}
+    rpc GetValue(Key) returns (GetResponse) {}
+    rpc DeleteValue(Key) returns (DelResponse) {}
+}
+
+message Key {
+    string key = 1;
+}
+
+message Pair {
+    string key = 1;
+    string value = 2;
+}
+
+message PutResponse {
+    bool ok = 1;
+}
+
+message GetResponse {
+    string value = 1;
+    bool ok = 2;
+}
+
+message DelResponse {
+    bool ok = 1;
+}
