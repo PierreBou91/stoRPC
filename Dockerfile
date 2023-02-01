@@ -1,14 +1,13 @@
 FROM golang:1.19 AS builder
 
-WORKDIR /usr/src/app
+COPY . /src
 
-COPY go.mod go.sum ./
-COPY storpc_server/server.go .
+WORKDIR /src/storpc_server
 
 RUN CGO_ENABLED=0 GOOS=linux go build -o server
 
 FROM scratch
 
-COPY --from=builder /usr/src/app/server .
+COPY --from=builder /src/storpc_server/server .
 
-ENTRYPOINT server
+ENTRYPOINT ["./server"]
