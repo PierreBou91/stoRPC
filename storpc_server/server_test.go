@@ -43,7 +43,6 @@ func TestServices(t *testing.T) {
 	// 3. define test variables
 	pair := &pb.Pair{Key: "key", Value: "value"}
 
-	// SPEC 1: User can store a key value pair on server
 	t.Run("User can store a key value pair on server", func(t *testing.T) {
 		res, err := client.PutValue(ctx, pair)
 		if err != nil || !res.Ok {
@@ -51,7 +50,6 @@ func TestServices(t *testing.T) {
 		}
 	})
 
-	// SPEC 2: User can retrieve a value from the server
 	t.Run("User can retrieve a value from the server", func(t *testing.T) {
 		res, err := client.GetValue(ctx, &pb.Key{Key: pair.Key})
 		if err != nil || res.Value != pair.Value {
@@ -59,7 +57,6 @@ func TestServices(t *testing.T) {
 		}
 	})
 
-	// SPEC 3: User can delete a key value pair from the server
 	t.Run("User can delete a key value pair from the server", func(t *testing.T) {
 		res, err := client.DeleteValue(ctx, &pb.Key{Key: pair.Key})
 		if err != nil || !res.Ok {
