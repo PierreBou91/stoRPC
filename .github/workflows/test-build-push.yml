@@ -45,4 +45,4 @@ jobs:
         uses: docker/build-push-action@v4
         with:
           push: true
-          tags: "${{ secrets.DOCKERHUB_USERNAME }}/storpc-server:${{ vars.GITHUB_SHA }}"
+          tags: "${{ secrets.DOCKERHUB_USERNAME }}/storpc-server:${{ env.GITHUB_SHA }}"
