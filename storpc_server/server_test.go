@@ -35,7 +35,7 @@ func TestServices(t *testing.T) {
 	ctx := context.Background()
 
 	// 2. create client
-	client, err := storpcClientForTest("localhost:8081")
+	client, err := storpcClientForTest(TEST_HOST)
 	if err != nil {
 		t.Errorf("Error while creating client: %v", err)
 	}
