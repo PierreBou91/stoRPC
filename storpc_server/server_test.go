@@ -10,7 +10,7 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 )
 
-const TEST_HOST string = "localhost:8081"
+const TEST_HOST string = "localhost:8080"
 
 func storpcClientForTest(host string) (pb.StorpcClient, error) {
 	var opts []grpc.DialOption
@@ -35,7 +35,7 @@ func TestServices(t *testing.T) {
 	ctx := context.Background()
 
 	// 2. create client
-	client, err := storpcClientForTest(TEST_HOST)
+	client, err := storpcClientForTest("localhost:8081")
 	if err != nil {
 		t.Errorf("Error while creating client: %v", err)
 	}
