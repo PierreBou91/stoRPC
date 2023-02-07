@@ -10,7 +10,7 @@ import (
 	"google.golang.org/grpc/credentials/insecure"
 )
 
-const TEST_HOST string = "localhost:8080"
+const TEST_HOST string = "localhost:8081"
 
 func storpcClientForTest(host string) (pb.StorpcClient, error) {
 	var opts []grpc.DialOption
