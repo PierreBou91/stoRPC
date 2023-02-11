@@ -74,6 +74,8 @@ func launchServer(host string) {
 
 	var opts []grpc.ServerOption
 	s := grpc.NewServer(opts...)
+
+	log.Printf("Server listening on %s", host)
 	pb.RegisterStorpcServer(s, newServer())
 
 	if err := s.Serve(ln); err != nil {
