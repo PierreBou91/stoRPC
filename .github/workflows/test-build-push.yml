@@ -32,8 +32,8 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      - LATEST_DOCKER_IMAGE_TAG: "${{ secrets.DOCKERHUB_USERNAME }}/storpc-server:latest"
-      - SHA_DOCKER_IMAGE_TAG: "${{ secrets.DOCKERHUB_USERNAME }}/storpc-server:${{ github.sha }}"
+      LATEST_DOCKER_IMAGE_TAG: ${{ secrets.DOCKERHUB_USERNAME }}/storpc-server:latest
+      SHA_DOCKER_IMAGE_TAG: ${{ secrets.DOCKERHUB_USERNAME }}/storpc-server:${{ github.sha }}
 
     steps:
       - name: Checkout
