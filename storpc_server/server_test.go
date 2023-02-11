@@ -4,10 +4,12 @@ import (
 	"context"
 	"log"
 	"testing"
+	"time"
 
 	pb "github.com/PierreBou91/stoRPC/storpc"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials/insecure"
+	healthpb "google.golang.org/grpc/health/grpc_health_v1"
 )
 
 const TEST_HOST string = ":8080"
@@ -28,11 +30,12 @@ func TestServices(t *testing.T) {
 	// 2. create client
 	// 3. define test variables
 	// 4. run test cases
+	ctx := context.Background()
 
 	// 1. launch server
-	go launchServer(TEST_HOST) // possible problem where server is not ready yet
+	go launchServer(TEST_HOST)
 
-	ctx := context.Background()
+	waitForTestServerToBeReady(ctx, t)
 
 	// 2. create client
 	client, err := storpcClientForTest(TEST_HOST)
@@ -65,4 +68,29 @@ func TestServices(t *testing.T) {
 		}
 	})
 
+}
+
+// waitForServerToBeReady is a UGLY and should be corrected to implement a timeout with the context
+func waitForTestServerToBeReady(ctx context.Context, t *testing.T) {
+	healthConn, err := grpc.Dial(TEST_HOST, grpc.WithTransportCredentials(insecure.NewCredentials()))
+
+	if err != nil {
+		t.Errorf("Error while creating health client: %v", err)
+	}
+
+	healthClient := healthpb.NewHealthClient(healthConn)
+
+	// UGLY
+	for {
+		resp, err := healthClient.Check(ctx, &healthpb.HealthCheckRequest{})
+		if err != nil {
+			t.Errorf("Error while calling health check: %v", err)
+		}
+
+		if resp.Status == healthpb.HealthCheckResponse_SERVING {
+			break
+		}
+
+		time.Sleep(100 * time.Millisecond)
+	}
 }

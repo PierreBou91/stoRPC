@@ -8,6 +8,8 @@ import (
 
 	pb "github.com/PierreBou91/stoRPC/storpc"
 	"google.golang.org/grpc"
+	health "google.golang.org/grpc/health"
+	healthpb "google.golang.org/grpc/health/grpc_health_v1"
 )
 
 type storpcServer struct {
@@ -75,8 +77,15 @@ func launchServer(host string) {
 	var opts []grpc.ServerOption
 	s := grpc.NewServer(opts...)
 
+	healthServer := health.NewServer()
+
+	// There should be logic here to set the status to NOT_SERVING
+	healthServer.SetServingStatus(pb.Storpc_ServiceDesc.ServiceName, healthpb.HealthCheckResponse_SERVING)
+
 	log.Printf("Server listening on %s", host)
+
 	pb.RegisterStorpcServer(s, newServer())
+	healthpb.RegisterHealthServer(s, healthServer)
 
 	if err := s.Serve(ln); err != nil {
 		log.Fatalf("failed to serve: %v", err)
