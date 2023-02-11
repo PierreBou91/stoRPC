@@ -63,7 +63,7 @@ func newServer() *storpcServer {
 }
 
 func main() {
-	launchServer(":8080")
+	launchServer(":7070")
 }
 
 func launchServer(host string) {
