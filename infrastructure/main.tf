@@ -42,10 +42,6 @@ resource "aws_ecs_task_definition" "server_task" {
         {
           containerPort = 8080
           hostPort      = 8080
-        },
-        {
-          containerPort = 7070
-          hostPort      = 7070
         }
       ]
     }
