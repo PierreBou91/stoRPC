@@ -46,7 +46,6 @@ func TestServices(t *testing.T) {
 	// 3. define test variables
 	pair := &pb.Pair{Key: "key", Value: "value"}
 
-	log.Printf("Running tests against server at %s", TEST_HOST)
 	t.Run("User can store a key value pair on server", func(t *testing.T) {
 		res, err := client.PutValue(ctx, pair)
 		if err != nil || !res.Ok {
@@ -70,7 +69,8 @@ func TestServices(t *testing.T) {
 
 }
 
-// waitForServerToBeReady is a UGLY and should be corrected to implement a timeout with the context
+// waitForServerToBeReady is a UGLY and should be corrected to implement
+// a proper healthcheck that times out with the context
 func waitForTestServerToBeReady(ctx context.Context, t *testing.T) {
 	healthConn, err := grpc.Dial(TEST_HOST, grpc.WithTransportCredentials(insecure.NewCredentials()))
 

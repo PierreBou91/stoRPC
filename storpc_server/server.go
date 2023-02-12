@@ -24,8 +24,6 @@ func (s *storpcServer) PutValue(ctx context.Context, in *pb.Pair) (*pb.PutRespon
 	defer s.Unlock()
 	s.store[in.Key] = in.Value
 
-	log.Printf("PutValue: %s -> %s", in.Key, in.Value)
-
 	return &pb.PutResponse{
 		Ok: true,
 	}, nil
@@ -79,14 +77,11 @@ func launchServer(host string) {
 
 	healthServer := health.NewServer()
 
-	// There should be logic here to set the status to NOT_SERVING
-	healthServer.SetServingStatus(pb.Storpc_ServiceDesc.ServiceName, healthpb.HealthCheckResponse_SERVING)
-
-	log.Printf("Server listening on %s", host)
-
 	pb.RegisterStorpcServer(s, newServer())
 	healthpb.RegisterHealthServer(s, healthServer)
 
+	// There should be logic here to set the status to NOT_SERVING
+	healthServer.SetServingStatus(pb.Storpc_ServiceDesc.ServiceName, healthpb.HealthCheckResponse_SERVING)
 	if err := s.Serve(ln); err != nil {
 		log.Fatalf("failed to serve: %v", err)
 	}
