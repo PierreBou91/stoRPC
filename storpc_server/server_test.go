@@ -82,6 +82,7 @@ func waitForTestServerToBeReady(ctx context.Context, t *testing.T) {
 
 	// UGLY
 	for {
+		time.Sleep(100 * time.Millisecond)
 		resp, err := healthClient.Check(ctx, &healthpb.HealthCheckRequest{})
 		if err != nil {
 			t.Errorf("Error while calling health check: %v", err)
@@ -91,6 +92,5 @@ func waitForTestServerToBeReady(ctx context.Context, t *testing.T) {
 			break
 		}
 
-		time.Sleep(100 * time.Millisecond)
 	}
 }
